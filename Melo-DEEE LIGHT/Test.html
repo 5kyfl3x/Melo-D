@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Playlist</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            color: #1db954;
+            font-size: 2.5em;
+        }
+        
+        .playlist {
+            background-color: #181818;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .song {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #282828;
+            transition: background-color 0.3s;
+        }
+        
+        .song:last-child {
+            border-bottom: none;
+        }
+        
+        .song:hover {
+            background-color: #282828;
+            cursor: pointer;
+        }
+        
+        .song-info {
+            flex: 1;
+            margin-left: 15px;
+        }
+        
+        .song-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        
+        .song-artist {
+            color: #b3b3b3;
+            font-size: 0.9em;
+        }
+        
+        .song-duration {
+            color: #b3b3b3;
+        }
+        
+        .album-cover {
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .control-btn {
+            background-color: #1db954;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin: 0 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .control-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .now-playing {
+            background-color: #1db954;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Music Playlist</h1>
+            <p>Curated with love ♥</p>
+        </header>
+        
+        <div class="playlist">
+            <div class="song" onclick="playSong(1)">
+                <img src="https://i.scdn.co/image/ab67616d00001e02ff9ca10b55ce82ae553c8228" alt="alt" class="album-cover">
+                <div class="song-info">
+                    <div class="song-title">Song 1</div>
+                    <div class="song-artist">Artist 1</div>
+                </div>
+                <div class="song-duration">3:20</div>
+            </div>
+            
+            <div class="song" onclick="playSong(2)">
+                <img src="https://i.scdn.co/image/ab67616d00001e029ad3e9959f48d513886b8933" alt="alt" class="album-cover">
+                <div class="song-info">
+                    <div class="song-title">Song 2</div>
+                    <div class="song-artist">Artist 2</div>
+                </div>
+                <div class="song-duration">3:35</div>
+            </div>
+            
+            <div class="song" onclick="playSong(3)">
+                <img src="https://i.scdn.co/image/ab67616d00001e0268a7a360a9f6d3a9a7a7b8d9" alt="alt" class="album-cover">
+                <div class="song-info">
+                    <div class="song-title">Song 3</div>
+                    <div class="song-artist">Artist 3</div>
+                </div>
+                <div class="song-duration">3:23</div>
+            </div>
+            
+            <div class="song" onclick="playSong(4)">
+                <img src="https://i.scdn.co/image/ab67616d00001e02c7e0557c6e8f1c4e1f0a1c0e" alt="alt" class="album-cover">
+                <div class="song-info">
+                    <div class="song-title">Song 4</div>
+                    <div class="song-artist">Artist 4</div>
+                </div>
+                <div class="song-duration">2:21</div>
+            </div>
+            
+            <div class="song" onclick="playSong(5)">
+                <img src="https://i.scdn.co/image/ab67616d00001e02a3b3b3b3b3b3b3b3b3b3b3b" alt="alt" class="album-cover">
+                <div class="song-info">
+                    <div class="song-title">Song 5</div>
+                    <div class="song-artist">Artist 5</div>
+                </div>
+                <div class="song-duration">2:58</div>
+            </div>
+            
+
+        <div class="now-playing" id="nowPlaying">
+            <p>Now Playing: <span id="currentSong"></span></p>
+        </div>
+        
+        <div class="controls">
+            <button class="control-btn" onclick="previousSong()">⏮</button>
+            <button class="control-btn" onclick="togglePlay()">⏯</button>
+            <button class="control-btn" onclick="nextSong()">⏭</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentSongIndex = 0;
+        let isPlaying = false;
+        const songs = [
+            { title: "Song 1 - Artist 1", duration: "3:20" },
+            { title: "Song 2 - Artist 2", duration: "3:35" },
+            { title: "Song 3 - Artist 3", duration: "3:23" },
+            { title: "Song 4 - Artist 4", duration: "2:21" },
+            { title: "Song 5 - Artist 5", duration: "2:58" },
+        ];
+        
+        function playSong(index) {
+            currentSongIndex = index - 1;
+            document.getElementById('currentSong').textContent = songs[currentSongIndex].title;
+            document.getElementById('nowPlaying').style.display = 'block';
+            isPlaying = true;
+            // In a real implementation, you would actually play the audio here
+        }
+        
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            if (isPlaying && document.getElementById('nowPlaying').style.display === 'none') {
+                if (currentSongIndex === 0) {
+                    playSong(1);
+                } else {
+                    playSong(currentSongIndex + 1);
+                }
+            }
+            // In a real implementation, you would pause/resume the audio here
+        }
+        
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            document.getElementById('currentSong').textContent = songs[currentSongIndex].title;
+            document.getElementById('nowPlaying').style.display = 'block';
+            // In a real implementation, you would play the next song here
+        }
+        
+        function previousSong() {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            document.getElementById('currentSong').textContent = songs[currentSongIndex].title;
+            document.getElementById('nowPlaying').style.display = 'block';
+            // In a real implementation, you would play the previous song here
+        }
+    </script>
+</body>
+</html>
